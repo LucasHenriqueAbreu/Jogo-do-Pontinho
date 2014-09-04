@@ -1,0 +1,21 @@
+<DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style.css"/>    
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+</head>
+<body ng-controller="Controller">
+Jogador 1 pontos: {{pontuacaoJogador1}} ___ Jogador 2 Pontos: {{pontuacaoJogador2}}
+        <div id="jogo" class="backGround">
+            <div id="{{$index}}" class="ponto" ng-repeat="ponto in listaPontos" ng-click="obterTraco(ponto)">
+                    <span class="textPonto">{{ponto.id}}</span>
+                    <div id="tracoVertical{{$index}}" class="tracoVertical"></div>
+                    <div id="tracoHorizontal{{$index}}" class="tracoHorizontal"></div>
+            </div>          
+        </div>
+        <span>Pontos já traçados:</span>
+        <div ng-repeat="jogada in listaPontosTracados">ponto1:{{jogada.ponto1}} --- ponto2:{{jogada.ponto2}}</div>
+</body>
+</html>

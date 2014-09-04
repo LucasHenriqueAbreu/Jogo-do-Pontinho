@@ -1,0 +1,70 @@
+.backGround{
+    height: 460px;
+    width: 730px;
+    border: solid 3px;
+    background: rgb(89, 136, 196);
+    border-radius: 20px;
+}
+.ponto{
+    height: 25px;
+    width: 25px;
+    border-radius: 20px;
+    background-color: #000;
+    float: left;
+    margin: 10px;
+    color: #fff;
+    font-size: 15px;
+    text-align: center;
+}
+.pontoSelecionadoJogador1{
+    height: 25px;
+    width: 25px;
+    border-radius: 20px;
+    float: left;
+    margin: 10px;
+    color: #fff;
+    font-size: 15px;
+    text-align: center;
+    background-color: #8AD985
+}
+.pontoSelecionadoJogador2{
+    height: 25px;
+    width: 25px;
+    border-radius: 20px;
+    float: left;
+    margin: 10px;
+    color: #fff;
+    font-size: 15px;
+    text-align: center;
+    background-color: #B01E10
+}
+.tracoVertical {
+    width: 25px;
+    height: 3px;
+    background-color: red;
+    margin-top: -5px;
+    margin-left: 25px;
+    display: none;
+}
+.tracoHorizontal {
+    height: 25px;
+    width: 3px;
+    background: red;
+    margin-left: 11px;
+    margin-top: 8px;
+    display: none;
+}
+.tracoVerticalVisivel {
+    width: 25px;
+    height: 3px;
+    background-color: red;
+    margin-top: -5px;
+    margin-left: 25px;
+}
+.tracoHorizontalVisivel {
+    height: 25px;
+    width: 3px;
+    background: red;
+    margin-left: 11px;
+    margin-top: 8px;
+}
