@@ -29,26 +29,22 @@ app.controller('Controller', ['$scope', '$rootScope',
       scope.obterTraco = function(ponto) { 
         var vitoria = false;
 
-        if (scope.verficaFimJogo(scope.listaQuatrados)){
-           alert("Fim de Jogo")
-           scope.limpaQuadro();
-        }
+        if (scope.verficaGanhador(scope.listaQuatrados, scope.pontuacaoJogador1, scope.pontuacaoJogador2)){
+          return;
+        };
 
         if (scope.ponto1 == null) {
-                  scope.ponto1 = ponto;
-                  scope.anterior = scope.ponto1.id - 1;
-                  scope.proximo = scope.ponto1.id + 1;
-                  scope.acima = scope.ponto1.id - 16;
-                  scope.abaixo = scope.ponto1.id + 16;
+              scope.ponto1 = ponto;
+              scope.anterior = scope.ponto1.id - 1;
+              scope.proximo = scope.ponto1.id + 1;
+              scope.acima = scope.ponto1.id - 16;
+              scope.abaixo = scope.ponto1.id + 16;
 
-                  if (scope.vez == 1) {
-                      var pontoSelecionado = document.getElementById(ponto.id).className = 'pontoSelecionadoJogador1';
-                  } else {
-                    var pontoSelecionado = document.getElementById(ponto.id).className = 'pontoSelecionadoJogador2';
-                  }      
+              scope.setSelecaoPonto(scope.vez, ponto.id); 
+
         } else if (ponto.id == scope.ponto1.id) {
-                scope.ponto1 = null;
-                var pontoSelecionado = document.getElementById(ponto.id).className = 'ponto';
+              scope.ponto1 = null;
+              var pontoSelecionado = document.getElementById(ponto.id).className = 'ponto';
         } else {
 
               if (ponto.id == scope.anterior || ponto.id == scope.proximo 
@@ -60,35 +56,39 @@ app.controller('Controller', ['$scope', '$rootScope',
                     }
                     scope.listaPontosTracados.push(objeto);
 
-                    if (scope.vez == 1) {
-                        var pontoSelecionado = document.getElementById(ponto.id).className = 'pontoSelecionadoJogador1';
-                    } else {
-                        var pontoSelecionado = document.getElementById(ponto.id).className = 'pontoSelecionadoJogador2';
-                    }
+                    scope.setSelecaoPonto(scope.vez, ponto.id);
                    
                     scope.setTraco(ponto.id, scope.anterior, scope.proximo, scope.acima, scope.abaixo);
                     
 
-                    if((scope.ponto1.id == scope.ponto2.id - 1) || (scope.ponto2.id == scope.ponto1.id - 1)) {
-                        if ((scope.verificaPontuacaoVerticalAcima(ponto.id, scope.ponto1.id, scope.ponto2.id)) 
-                          || (scope.verificaPontuacaoVerticalAbaixo(ponto.id, scope.ponto1.id, scope.ponto2.id)))  {
+                    if((scope.ponto1.id == scope.ponto2.id - 1) || (scope.ponto2.id == scope.ponto1.id - 1)) {                     
+                        if (scope.verificaPontuacaoVerticalAcima(ponto.id, scope.ponto1.id, scope.ponto2.id)){
+                                 vitoria = true;
+                                 scope.addPontuacao(scope.vez);
+                          if (scope.verificaPontuacaoVerticalAbaixo(ponto.id, scope.ponto1.id, scope.ponto2.id)) {
+                                 scope.addPontuacao(scope.vez);
+                          }
+                        } else if (scope.verificaPontuacaoVerticalAbaixo(ponto.id, scope.ponto1.id, scope.ponto2.id))  {
                               vitoria = true;
-                                 if(scope.vez == 1) {
-                                      scope.pontuacaoJogador1++;
-                                 } else {
-                                      scope.pontuacaoJogador2++;
-                                 }  
+                              scope.addPontuacao(scope.vez);
+                          if (scope.verificaPontuacaoVerticalAcima(ponto.id, scope.ponto1.id, scope.ponto2.id)){
+                              scope.addPontuacao(scope.vez);
+                          }  
                         } 
                     } else { 
-                        if ((scope.verificaPontuacaoHorizontalDireita(ponto.id, scope.ponto1.id, scope.ponto2.id))
-                          || (scope.verificaPontuacaoHorizontalEsquerda(ponto.id, scope.ponto1.id, scope.ponto2.id))) {
+                        if (scope.verificaPontuacaoHorizontalDireita(ponto.id, scope.ponto1.id, scope.ponto2.id)){
+                            vitoria = true;
+                            scope.addPontuacao(scope.vez);
+                            if (scope.verificaPontuacaoHorizontalEsquerda(ponto.id, scope.ponto1.id, scope.ponto2.id)){
+                                scope.addPontuacao(scope.vez);
+                            }
+                        } else if(scope.verificaPontuacaoHorizontalEsquerda(ponto.id, scope.ponto1.id, scope.ponto2.id)) {
                               vitoria = true;
-                                 if(scope.vez == 1) {
-                                      scope.pontuacaoJogador1++;
-                                 } else {
-                                      scope.pontuacaoJogador2++;
-                                 }
-                        } 
+                              scope.addPontuacao(scope.vez);
+                          if (scope.verificaPontuacaoHorizontalDireita(ponto.id, scope.ponto1.id, scope.ponto2.id)) {
+                              scope.addPontuacao(scope.vez);
+                          }            
+                       } 
                     }
                     if(!vitoria){
                       scope.vez = (scope.vez == 1? 2:1);
@@ -103,6 +103,21 @@ app.controller('Controller', ['$scope', '$rootScope',
         }
 
       }
+      scope.addPontuacao = function(vez){
+        if(vez == 1) {
+              scope.pontuacaoJogador1++;
+         } else {
+              scope.pontuacaoJogador2++;
+         }
+      }
+
+      scope.setSelecaoPonto = function(vez, ponto){
+          if (scope.vez == 1) {
+              var pontoSelecionado = document.getElementById(ponto).className = 'pontoSelecionadoJogador1';
+          } else {
+              var pontoSelecionado = document.getElementById(ponto).className = 'pontoSelecionadoJogador2';
+          }
+      }
 
       scope.setTraco = function(ponto, anterior, proximo, acima, abaixo) {
           if (ponto == anterior) {
@@ -116,6 +131,24 @@ app.controller('Controller', ['$scope', '$rootScope',
             id = ponto - 16;
             var traco = document.getElementById('tracoHorizontal'+id).className = 'tracoHorizontalVisivel';
           }
+      }
+
+      scope.verficaGanhador = function(lista, pontuacaoJogador1, pontuacaoJogador2){
+        if (scope.verficaFimJogo(lista)){
+           
+           if (pontuacaoJogador1 > pontuacaoJogador2){
+               alert("Vitória Jogador 1");
+           } else if(pontuacaoJogador1 > pontuacaoJogador2){
+               alert("Vitória para Jogador 2");
+           } else {
+              alert('empate!');
+           }
+           
+           alert("Fim de Jogo")
+           scope.limpaQuadro();
+           return true;
+        }
+        return false;
       }
 
       scope.verficaFimJogo = function(list){
