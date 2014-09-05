@@ -17,6 +17,7 @@ app.controller('Controller', ['$scope', '$rootScope',
       scope.pontuacaoJogador2 = 0;
 
       scope.listaPontosTracados = [];
+      scope.listaQuatrados = [];
 
       for (var i = 0; i < 160; i++) {
         var objeto = {
@@ -27,6 +28,12 @@ app.controller('Controller', ['$scope', '$rootScope',
 
       scope.obterTraco = function(ponto) { 
         var vitoria = false;
+
+        if (scope.verficaFimJogo(scope.listaQuatrados)){
+           alert("Fim de Jogo")
+           scope.limpaQuadro();
+        }
+
         if (scope.ponto1 == null) {
                   scope.ponto1 = ponto;
                   scope.anterior = scope.ponto1.id - 1;
@@ -63,13 +70,14 @@ app.controller('Controller', ['$scope', '$rootScope',
                     
 
                     if((scope.ponto1.id == scope.ponto2.id - 1) || (scope.ponto2.id == scope.ponto1.id - 1)) {
-                        if (scope.verificaPontuacaoVerticalAcima(ponto.id, scope.ponto1.id, scope.ponto2.id)) {
+                        if ((scope.verificaPontuacaoVerticalAcima(ponto.id, scope.ponto1.id, scope.ponto2.id)) 
+                          || (scope.verificaPontuacaoVerticalAbaixo(ponto.id, scope.ponto1.id, scope.ponto2.id)))  {
                               vitoria = true;
                                  if(scope.vez == 1) {
                                       scope.pontuacaoJogador1++;
                                  } else {
                                       scope.pontuacaoJogador2++;
-                                 }
+                                 }  
                         } 
                     } else { 
                         if ((scope.verificaPontuacaoHorizontalDireita(ponto.id, scope.ponto1.id, scope.ponto2.id))
@@ -110,6 +118,20 @@ app.controller('Controller', ['$scope', '$rootScope',
           }
       }
 
+      scope.verficaFimJogo = function(list){
+        if (list.length >= 135){
+           return true;
+        }
+         return false;
+      }
+      scope.limpaQuadro = function(){
+        for (var i = 0; i <= 160 ; i++) {
+          var ponto = document.getElementById(i).className = 'ponto';
+          var traco = document.getElementById('tracoHorizontal'+i).className = '';
+          var traco = document.getElementById('tracoVertical'+ i).className = '';
+        };
+        
+      }
       scope.verificaPontuacaoHorizontalDireita = function(ponto, ponto1, ponto2){
 
             var anterior = ponto - 1;
@@ -148,6 +170,13 @@ app.controller('Controller', ['$scope', '$rootScope',
            });  
 
           if(aux == 4){
+            objeto = {
+             'ponto': ponto,
+             'anterior': anterior,
+             'anterioracimaOuAbaixo': anterioracimaOuAbaixo,
+             'acimaOuAbaixo': acimaOuAbaixo
+            }
+            scope.listaQuatrados.push(objeto);
             return true;
           }
             return false;
@@ -192,6 +221,13 @@ app.controller('Controller', ['$scope', '$rootScope',
            });  
 
           if(aux == 4){
+            objeto = {
+             'ponto': ponto,
+             'proximo': proximo,
+             'proximoAcimaOuAbaixo': proximoAcimaOuAbaixo,
+             'acimaOuAbaixo': acimaOuAbaixo
+            }
+            scope.listaQuatrados.push(objeto);
             return true;
           }
             return false;
@@ -200,30 +236,96 @@ app.controller('Controller', ['$scope', '$rootScope',
       scope.verificaPontuacaoVerticalAcima = function(ponto, ponto1, ponto2){
 
             var anterior = ponto - 1;
-            var acima = ponto - 16;
-            var anteriorAcima = acima -1; 
+            var proximo = ponto + 1; 
 
             var abaixo = ponto + 16;
             var anteriorAbaixo = abaixo -1; 
+            var proximoAbaixo = abaixo +1; 
             var aux = 0;
+            var proximoOuAnterior;
+            var proximoAbaixoOuAnteriorAbaixo;
+
+        if (ponto1 < ponto2){
+            proximoOuAnterior = anterior;
+            proximoAbaixoOuAnteriorAbaixo = anteriorAbaixo;
+        } else {
+            proximoOuAnterior = proximo;
+            proximoAbaixoOuAnteriorAbaixo = proximoAbaixo;
+        }
         
         angular.forEach(scope.listaPontosTracados, function(traco){    
 
                if (scope.verificaTracoIgual(traco, ponto, abaixo)) {
                  aux++;
                } 
-               if(scope.verificaTracoIgual(traco, abaixo, anteriorAbaixo)){
+               if(scope.verificaTracoIgual(traco, abaixo, proximoAbaixoOuAnteriorAbaixo)){
                  aux++;
                }
-               if (scope.verificaTracoIgual(traco, anteriorAbaixo, anteriorAcima)) {
+               if (scope.verificaTracoIgual(traco, proximoAbaixoOuAnteriorAbaixo, proximoOuAnterior)) {
                  aux++;
                }
-               if (scope.verificaTracoIgual(traco, anteriorAcima, ponto)) {
+               if (scope.verificaTracoIgual(traco, proximoOuAnterior, ponto)) {
                  aux++;
                }
            });  
 
           if(aux == 4){
+            objeto = {
+             'ponto': ponto,
+             'proximo': abaixo,
+             'proximoAbaixoOuAnteriorAbaixo': proximoAbaixoOuAnteriorAbaixo,
+             'proximoOuAnterior': proximoOuAnterior
+            }
+            scope.listaQuatrados.push(objeto);
+            return true;
+          }
+            return false;
+
+      }
+
+      scope.verificaPontuacaoVerticalAbaixo = function(ponto, ponto1, ponto2){
+
+            var anterior = ponto - 1;
+            var acima = ponto - 16;
+            var anteriorAcima = acima -1;
+            var proximoAcima = acima +1;
+            var proximo = ponto + 1;     
+            var aux = 0;
+            var proximoOuAnterior;
+            var proximoAcimaOuAnteriorAcima;
+
+        if (ponto1 < ponto2){
+            proximoOuAnterior = anterior;
+            proximoAcimaOuAnteriorAcima = anteriorAcima;
+        } else {
+            proximoOuAnterior = proximo;
+            proximoAcimaOuAnteriorAcima = proximoAcima;
+        }
+        
+        angular.forEach(scope.listaPontosTracados, function(traco){    
+
+               if (scope.verificaTracoIgual(traco, ponto, acima)) {
+                 aux++;
+               } 
+               if(scope.verificaTracoIgual(traco, acima, proximoAcimaOuAnteriorAcima)){
+                 aux++;
+               }
+               if (scope.verificaTracoIgual(traco, proximoAcimaOuAnteriorAcima, proximoOuAnterior)) {
+                 aux++;
+               }
+               if (scope.verificaTracoIgual(traco, proximoOuAnterior, ponto)) {
+                 aux++;
+               }
+           });  
+
+          if(aux == 4){
+            objeto = {
+             'ponto': ponto,
+             'proximo': acima,
+             'proximoAcimaOuAnteriorAcima': proximoAcimaOuAnteriorAcima,
+             'proximoOuAnterior': proximoOuAnterior
+            }
+            scope.listaQuatrados.push(objeto);
             return true;
           }
             return false;

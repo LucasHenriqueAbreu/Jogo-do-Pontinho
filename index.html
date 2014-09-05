@@ -7,7 +7,13 @@
     <script type="text/javascript" src="app.js"></script>
 </head>
 <body ng-controller="Controller">
-Jogador 1 pontos: {{pontuacaoJogador1}} ___ Jogador 2 Pontos: {{pontuacaoJogador2}}
+    <div class="Placar">
+        <div style="border-bottom: 3px solid;"> 
+            <span class="nomeJogador1" >Jogador 1</span><span class="x">X</span><span class="xMeio">X</span><span class="nomeJogador2">Jogador 2</span>
+        </div>
+        <span class="pontosJogador1">{{pontuacaoJogador1}}</span> <span class="pontosJogador2">{{pontuacaoJogador2}} </span>
+    </div>
+
         <div id="jogo" class="backGround">
             <div id="{{$index}}" class="ponto" ng-repeat="ponto in listaPontos" ng-click="obterTraco(ponto)">
                     <span class="textPonto">{{ponto.id}}</span>
@@ -15,7 +21,5 @@ Jogador 1 pontos: {{pontuacaoJogador1}} ___ Jogador 2 Pontos: {{pontuacaoJogador
                     <div id="tracoHorizontal{{$index}}" class="tracoHorizontal"></div>
             </div>          
         </div>
-        <span>Pontos já traçados:</span>
-        <div ng-repeat="jogada in listaPontosTracados">ponto1:{{jogada.ponto1}} --- ponto2:{{jogada.ponto2}}</div>
 </body>
 </html>

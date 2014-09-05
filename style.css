@@ -68,3 +68,60 @@
     margin-left: 11px;
     margin-top: 8px;
 }
+.quadradoVisivelJogador1{
+    height: 50px;
+    width: 50px;
+    margin: 20px;
+    background-color: #8AD985    
+}
+.quadradoVisivelJogador2{
+    height: 50px;
+    width: 50px;
+    margin: 20px;
+    background-color: #B01E10    
+}
+div.Placar {
+    background-color: #DF9400;
+    width: 25%;
+    border: 3px solid;
+    border-radius: 24px;
+    position: absolute;
+    margin-left: 55%;
+}
+span.pontosJogador1.ng-binding {
+    color: #277F15;
+    font-size: 60px;
+    padding: 47px;
+    font-family: sans-serif;
+}
+span.pontosJogador2.ng-binding {
+    color: #DF0000;
+    font-size: 60px;
+    padding: 47px;
+    font-family: sans-serif;
+}
+span.nomeJogador1 {
+    color: #277F15;
+    font-size: 27px;
+    font-family: sans-serif;
+    padding-left: 20px;
+}
+span.nomeJogador2 {
+    color: #DF0000;
+    font-size: 27px;
+    font-family: sans-serif;
+    padding-left: 60px;
+}
+span.x {
+    position: absolute;
+    font-size: 80px;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+span.xMeio {
+    color: #344B7F;
+    position: absolute;
+    font-size: 70px;
+    font-family: sans-serif;
+    padding: 7 2 2 5;
+}
