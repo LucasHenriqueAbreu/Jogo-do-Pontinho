@@ -4,4 +4,4 @@ Jogo-do-Pontinho
 Jogo do Pontinho.
 
 
-Um Simple modo de estudar Angularjs--  MakeGame.
+Um simples modo de estudar Angularjs--  MakeGame.
